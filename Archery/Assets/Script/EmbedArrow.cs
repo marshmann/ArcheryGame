@@ -17,7 +17,7 @@ public class EmbedArrow : MonoBehaviour {
             Destroy(sparks, 1f);
 
             //Set this bool to false since the spark object should no longer exist
-            sparkExists = false; //we do this so we don't attempt to destroy a non-existing object
+            sparkExists = false; //we do this so we don't attempt to destroy a non-existing object            
         }
     }
 
@@ -30,5 +30,7 @@ public class EmbedArrow : MonoBehaviour {
         sparks = Instantiate(sparksPrefab, transform) as GameObject; //instantiate a new sparks object
         sparksPrefab.transform.rotation = transform.rotation; //rotating the prefab will make it so the spark appears correctly
         sparkExists = true; //note that the spark object now exists
+
+        transform.localScale += new Vector3(3, 3, 3); //increase the scale of the arrow, since it's hard to see normally
     }
 }
