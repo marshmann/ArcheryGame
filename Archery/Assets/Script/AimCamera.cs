@@ -21,7 +21,7 @@ public class AimCamera : MonoBehaviour {
         //If you're not aiming, move at regular speed
         if (!Input.GetMouseButton(0)) CheckForMovement(speed); 
         //else you'll move at half speed
-        else CheckForMovement(speed / 2);
+        else CheckForMovement(speed / 1.5f);
     }
 
     //When the player goes to move, we'll move their rigidbody

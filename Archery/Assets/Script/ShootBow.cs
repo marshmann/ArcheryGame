@@ -9,24 +9,22 @@ public class ShootBow : MonoBehaviour {
 
     private GameObject arrow; //the created arrow (duplicate of the arrow prefab)
     private TrailRenderer trail; //trail for the arrow
-    private bool stopDraw = false; 
+    private bool stopDraw = false;
+    private bool zoom = false;
 
     private bool knockedArrow = false;
     private float drawDistance = 0;
 
+    private Quaternion originalRot;
+    private float changeRot = 45f / (58f/2);
+    private float totalHipRotChange = -85f;
+    private float totalAimRotChange = -85f;
+
+    private Vector3 changeBowPos = new Vector3(0, 0.005f * 2f, -0.0025f * 2f);
+    private Vector3 changeArrowPos = new Vector3(-0.01651724137f*2f, -0.00655172413f*2f, 0.00125862068f*2f);
+
     private Vector3 totalBowPosChanges = new Vector3(0, 0, 0);
     private Vector3 totalArrowPosChanges = new Vector3(0, 0, 0);
-
-    private float changeRot = 45f / 58f;
-    private float totalRotChange = -85f;
-
-    private Vector3 changeBowPos = new Vector3(0, 0.005f, -0.0025f);
-
-    //Calculate the rate at which the arrow pos needs altered by looking at the start and final positions of the arrowspawnpoint,
-    //Then take the difference between and then divide by a constant value (this case - 58).
-    private Vector3 changeArrowPos = new Vector3(-0.01651724137f, -0.00655172413f, 0.00125862068f);
-
-    private Quaternion originalRot;
 
     private void Start() {
         originalRot = bow.transform.localRotation; //store the bow's original rotatation
@@ -58,7 +56,7 @@ public class ShootBow : MonoBehaviour {
 
         totalBowPosChanges = new Vector3(0, 0, 0); //clear the total changes
         totalArrowPosChanges = new Vector3(0, 0, 0); //clear the total changes
-        totalRotChange = -85f;
+        totalHipRotChange = -85f;
     }
 
     //Check to see if the player wants to shoot an arrow
@@ -74,10 +72,24 @@ public class ShootBow : MonoBehaviour {
 
             //if the player hit/is holding down the left button and didn't recently attempt to stop draw
             if (Input.GetMouseButton(0) && !stopDraw) {
-
                 //check to see if the player wants to stop firing the arrow.  If so, then set the bool and set draw distance to 0
                 if (Input.GetKeyDown(KeyCode.R)) { stopDraw = true; drawDistance = 0; ResetBow(); }
-                else {
+                else if (Input.GetMouseButton(1)) {
+                    zoom = true;
+                    if (totalAimRotChange <= 0) {
+                        bow.transform.localRotation = Quaternion.Euler(totalAimRotChange += changeRot, -90, 0);
+                        bow.transform.localPosition += new Vector3(0, 0.0025f, -0.0025f);
+
+                        totalBowPosChanges += new Vector3(0, 0.0025f, -0.0025f);
+                    }
+                }
+                else if (Input.GetMouseButtonUp(1)) {
+                    zoom = false;
+                    totalAimRotChange = totalHipRotChange;
+                    ResetBow();
+                }
+
+                if (!stopDraw) { 
                     drawDistance += Time.deltaTime * pullSpeed; //set the draw distance
 
                     //Until we reach full draw distance, we're going to alter the bow's pos/angle as they pull back
@@ -85,7 +97,7 @@ public class ShootBow : MonoBehaviour {
                         //Move the bow and arrow to be closer as the player draws the string back
                         bow.transform.localPosition += changeBowPos; transform.localPosition += changeArrowPos;
                         //Alter the rotation of the bow as they are drawing it
-                        bow.transform.localRotation = Quaternion.Euler(totalRotChange += changeRot, -90, 0);
+                        bow.transform.localRotation = Quaternion.Euler(totalHipRotChange += changeRot, -90, 0);
                         //Incremement the total changes so we can undo them after the arrow is fired
                         totalBowPosChanges += changeBowPos; totalArrowPosChanges += changeArrowPos;
                     }
