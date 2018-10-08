@@ -12,35 +12,58 @@ public class ShootBow : MonoBehaviour {
     private bool stopDraw = false; 
 
     private bool knockedArrow = false;
-    private float drawDistance = 0;    
+    private float drawDistance = 0;
+
+    private Vector3 totalBowPosChanges = new Vector3(0, 0, 0);
+    private Vector3 totalArrowPosChanges = new Vector3(0, 0, 0);
+
+    private float changeRot = 45f / 58f;
+    private float totalRotChange = -85f;
+
+    private Vector3 changeBowPos = new Vector3(0, 0.005f, -0.0025f);
+
+    //Calculate the rate at which the arrow pos needs altered by looking at the start and final positions of the arrowspawnpoint,
+    //Then take the difference between and then divide by a constant value (this case - 58).
+    private Vector3 changeArrowPos = new Vector3(-0.01651724137f, -0.00655172413f, 0.00125862068f);
+
+    private Quaternion originalRot;
 
     private void Start() {
-        //spawn an arrow once the game starts
-        SpawnArrow();
+        originalRot = bow.transform.localRotation; //store the bow's original rotatation
+        SpawnArrow(); //spawn an arrow once the game starts
     }
-        
+
     //Once per frame, check to see if the player attempted to shoot an arrow 
     private void Update() {
         ShootArrow();
     }
 
+    //Spawn an arrow at the transform's position
     private void SpawnArrow() {
         if(arrowsRemaining > 0) { //if the player still has arrows
             knockedArrow = true; //set the bool
             arrow = Instantiate(arrowPrefab, transform.position, transform.rotation) as GameObject; //create new arrow
             arrow.transform.SetParent(transform, true); //set the arrow's parent
+            arrow.transform.localScale = new Vector3(0.6f, 0.6f, 0.6f);
             trail = arrow.GetComponent<TrailRenderer>(); //get the new trail component
         }
     }
 
+    //Reset the bow and arrow locations after an arrow is fired or canceled.
+    private void ResetBow() {
+        bow.transform.localPosition -= totalBowPosChanges; //reset bow's pos
+        bow.transform.localRotation = originalRot; //reset bow's rotation
+
+        transform.localPosition -= totalArrowPosChanges; //reset ArrowSpawnPoint's pos
+
+        totalBowPosChanges = new Vector3(0, 0, 0); //clear the total changes
+        totalArrowPosChanges = new Vector3(0, 0, 0); //clear the total changes
+        totalRotChange = -85f;
+    }
+
     //Check to see if the player wants to shoot an arrow
     private void ShootArrow() {
-        if(arrowsRemaining > 0) { //if they have arrows left
-
-            //Make sure draw distance can't go above 100
-            if(drawDistance > 100) {
-                drawDistance = 100;
-            }
+        if(arrowsRemaining > 0) { //if they have arrows left          
 
             //get the meshrenderers for the bow and arrow, as we'll be altering two attributes that they have
             SkinnedMeshRenderer bowSkin = bow.transform.GetComponent<SkinnedMeshRenderer>();
@@ -53,9 +76,21 @@ public class ShootBow : MonoBehaviour {
             if (Input.GetMouseButton(0) && !stopDraw) {
 
                 //check to see if the player wants to stop firing the arrow.  If so, then set the bool and set draw distance to 0
-                if (Input.GetKeyDown(KeyCode.R)) { stopDraw = true; drawDistance = 0; }
+                if (Input.GetKeyDown(KeyCode.R)) { stopDraw = true; drawDistance = 0; ResetBow(); }
+                else {
+                    drawDistance += Time.deltaTime * pullSpeed; //set the draw distance
 
-                drawDistance += Time.deltaTime * pullSpeed; //set the draw distance
+                    //Until we reach full draw distance, we're going to alter the bow's pos/angle as they pull back
+                    if (drawDistance < 100) {
+                        //Move the bow and arrow to be closer as the player draws the string back
+                        bow.transform.localPosition += changeBowPos; transform.localPosition += changeArrowPos;
+                        //Alter the rotation of the bow as they are drawing it
+                        bow.transform.localRotation = Quaternion.Euler(totalRotChange += changeRot, -90, 0);
+                        //Incremement the total changes so we can undo them after the arrow is fired
+                        totalBowPosChanges += changeBowPos; totalArrowPosChanges += changeArrowPos;
+                    }
+                    else drawDistance = 100; //Keep drawdistance at or below 100
+                }
             }
 
             //once the player let go of the left mouse button, we'll fire the arrow
@@ -76,8 +111,12 @@ public class ShootBow : MonoBehaviour {
                     af.enabled = true; //enable the arrowForce script (meaning it'll launch the arrow)
                     trail.enabled = true; //enable the trail effect
 
+                    ResetBow(); //reset the bow's rotation and position
                 }
-                else drawDistance = 0; //if the draw distance wasn't enough to launch the arrow, set it back to 0
+                else {
+                    drawDistance = 0; //if the draw distance wasn't enough to launch the arrow, set it back to 0
+                    ResetBow();
+                }
             }
             //Set the first attribute in the blendshape of each of the relative skins to the drawnDistance
             //In other words, this'll alter the appearance of the bow so it appears as if it is getting drawn back
