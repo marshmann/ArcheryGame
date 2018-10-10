@@ -5,6 +5,7 @@ public class AimCamera : MonoBehaviour {
     [SerializeField] float verSensitivity = 2;
     [SerializeField] float horSensitivity = 2;
     [SerializeField] float speed = 0.5f;
+    [SerializeField] float jumpForce = 1f;
     [SerializeField] Camera cam;
 
     //Called when the gameobject is created (which is at the start of the game)
@@ -18,8 +19,10 @@ public class AimCamera : MonoBehaviour {
         //Check to see if the player wants to move their camera
         CheckForCameraMovement();
 
+        if (Input.GetKeyDown(KeyCode.Space)) rb.AddForce(new Vector3(0, jumpForce, 0)); //jump
+        
         //If you're not aiming, move at regular speed
-        if (!Input.GetMouseButton(0)) CheckForMovement(speed); 
+        if(!Input.GetMouseButton(0) && !Input.GetKey(KeyCode.Space)) CheckForMovement(speed);
         //else you'll move at half speed
         else CheckForMovement(speed / 1.5f);
     }

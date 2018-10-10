@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 public class ShootBow : MonoBehaviour {
 
@@ -12,11 +13,15 @@ public class ShootBow : MonoBehaviour {
     private bool stopDraw = false;
     private bool zoom = false;
 
+    private bool reset = false;
+
     private bool knockedArrow = false;
     private float drawDistance = 0;
 
     private Quaternion originalRot;
-    private float changeRot = 45f / (58f/2);
+    private Vector3 originalPos;
+
+    private float changeRot = 45f / 46f;
     private float totalHipRotChange = -85f;
     private float totalAimRotChange = -85f;
 
@@ -28,17 +33,38 @@ public class ShootBow : MonoBehaviour {
 
     private void Start() {
         originalRot = bow.transform.localRotation; //store the bow's original rotatation
+        originalPos = bow.transform.localPosition; //store the bow's original pos
         SpawnArrow(); //spawn an arrow once the game starts
     }
 
     //Once per frame, check to see if the player attempted to shoot an arrow 
     private void Update() {
         ShootArrow();
-    }
 
+        if (reset == true) {
+            if (bow.transform.localRotation.eulerAngles.x <= originalRot.eulerAngles.x) reset = false;
+            else StartCoroutine(ResetRotation());
+        }
+    }
+    private IEnumerator ResetRotation() {
+        while(bow.transform.localRotation.eulerAngles.x > originalRot.eulerAngles.x) {
+            bow.transform.Rotate(Time.deltaTime * -5, 0, 0, Space.Self);
+
+            if (bow.transform.localPosition.y >= -0.4) bow.transform.localPosition = new Vector3(0, bow.transform.localPosition.y - 0.002f, bow.transform.localPosition.z);
+            
+            yield return new WaitForSeconds(0.001f);
+        }
+    }
     //Spawn an arrow at the transform's position
     private void SpawnArrow() {
         if(arrowsRemaining > 0) { //if the player still has arrows
+
+            if (reset) { //If the bow is still resetting, then we'll just jump back to the starting animation
+                reset = false;
+                bow.transform.localRotation = originalRot;
+                bow.transform.localPosition = originalPos;
+            }
+
             knockedArrow = true; //set the bool
             arrow = Instantiate(arrowPrefab, transform.position, transform.rotation) as GameObject; //create new arrow
             arrow.transform.SetParent(transform, true); //set the arrow's parent
@@ -46,11 +72,11 @@ public class ShootBow : MonoBehaviour {
             trail = arrow.GetComponent<TrailRenderer>(); //get the new trail component
         }
     }
-
     //Reset the bow and arrow locations after an arrow is fired or canceled.
     private void ResetBow() {
+        totalBowPosChanges.y = 0;
         bow.transform.localPosition -= totalBowPosChanges; //reset bow's pos
-        bow.transform.localRotation = originalRot; //reset bow's rotation
+        reset = true;
 
         transform.localPosition -= totalArrowPosChanges; //reset ArrowSpawnPoint's pos
 
@@ -61,7 +87,7 @@ public class ShootBow : MonoBehaviour {
 
     //Check to see if the player wants to shoot an arrow
     private void ShootArrow() {
-        if(arrowsRemaining > 0) { //if they have arrows left          
+        if (arrowsRemaining > 0) { //if they have arrows left          
 
             //get the meshrenderers for the bow and arrow, as we'll be altering two attributes that they have
             SkinnedMeshRenderer bowSkin = bow.transform.GetComponent<SkinnedMeshRenderer>();
