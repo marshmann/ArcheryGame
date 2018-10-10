@@ -23,6 +23,8 @@ public class EmbedArrow : MonoBehaviour {
 
     //Once the arrow collides with a mesh collider, this function'll be called
     private void OnCollisionEnter(Collision col) {
+        if (col.gameObject.tag == "Arrow") return; //ignore other arrow collision so it doesn't stop mid-air, also stops someone from creating a giant arrow due to the scale increase/
+
         transform.GetComponent<ArrowForce>().enabled = false; //We'll disable the projectile force script
         rb.isKinematic = true; //stop moving the object
 
@@ -32,5 +34,7 @@ public class EmbedArrow : MonoBehaviour {
         sparkExists = true; //note that the spark object now exists
 
         transform.localScale += new Vector3(3, 3, 3); //increase the scale of the arrow, since it's hard to see normally
+
+        transform.SetParent(GameObject.FindGameObjectWithTag("ArrowContainer").transform, true); //compact the arrows into an arrow container once they've landed. 
     }
 }

@@ -11,7 +11,7 @@ public class ShootBow : MonoBehaviour {
     private GameObject arrow; //the created arrow (duplicate of the arrow prefab)
     private TrailRenderer trail; //trail for the arrow
     private bool stopDraw = false;
-    private bool zoom = false;
+    //private bool zoom = false;
 
     private bool reset = false;
 
@@ -23,7 +23,6 @@ public class ShootBow : MonoBehaviour {
 
     private float changeRot = 45f / 46f;
     private float totalHipRotChange = -85f;
-    private float totalAimRotChange = -85f;
 
     private Vector3 changeBowPos = new Vector3(0, 0.005f * 2f, -0.0025f * 2f);
     private Vector3 changeArrowPos = new Vector3(-0.01651724137f*2f, -0.00655172413f*2f, 0.00125862068f*2f);
@@ -46,15 +45,7 @@ public class ShootBow : MonoBehaviour {
             else StartCoroutine(ResetRotation());
         }
     }
-    private IEnumerator ResetRotation() {
-        while(bow.transform.localRotation.eulerAngles.x > originalRot.eulerAngles.x) {
-            bow.transform.Rotate(Time.deltaTime * -5, 0, 0, Space.Self);
 
-            if (bow.transform.localPosition.y >= -0.4) bow.transform.localPosition = new Vector3(0, bow.transform.localPosition.y - 0.002f, bow.transform.localPosition.z);
-            
-            yield return new WaitForSeconds(0.001f);
-        }
-    }
     //Spawn an arrow at the transform's position
     private void SpawnArrow() {
         if(arrowsRemaining > 0) { //if the player still has arrows
@@ -72,6 +63,18 @@ public class ShootBow : MonoBehaviour {
             trail = arrow.GetComponent<TrailRenderer>(); //get the new trail component
         }
     }
+    
+    //Smoothly reset the rotation (and height) of the bow to rest position. 
+    private IEnumerator ResetRotation() {
+        while (bow.transform.localRotation.eulerAngles.x > originalRot.eulerAngles.x) {
+            bow.transform.Rotate(Time.deltaTime * -5, 0, 0, Space.Self);
+
+            if (bow.transform.localPosition.y >= -0.4) bow.transform.localPosition = new Vector3(0, bow.transform.localPosition.y - 0.002f, bow.transform.localPosition.z);
+
+            yield return new WaitForSeconds(0.001f);
+        }
+    }
+
     //Reset the bow and arrow locations after an arrow is fired or canceled.
     private void ResetBow() {
         totalBowPosChanges.y = 0;
@@ -100,6 +103,8 @@ public class ShootBow : MonoBehaviour {
             if (Input.GetMouseButton(0) && !stopDraw) {
                 //check to see if the player wants to stop firing the arrow.  If so, then set the bool and set draw distance to 0
                 if (Input.GetKeyDown(KeyCode.R)) { stopDraw = true; drawDistance = 0; ResetBow(); }
+
+                /*
                 else if (Input.GetMouseButton(1)) {
                     zoom = true;
                     if (totalAimRotChange <= 0) {
@@ -114,6 +119,7 @@ public class ShootBow : MonoBehaviour {
                     totalAimRotChange = totalHipRotChange;
                     ResetBow();
                 }
+                */
 
                 if (!stopDraw) { 
                     drawDistance += Time.deltaTime * pullSpeed; //set the draw distance
