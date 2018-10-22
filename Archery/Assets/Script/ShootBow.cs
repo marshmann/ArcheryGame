@@ -104,23 +104,6 @@ public class ShootBow : MonoBehaviour {
                 //check to see if the player wants to stop firing the arrow.  If so, then set the bool and set draw distance to 0
                 if (Input.GetKeyDown(KeyCode.R)) { stopDraw = true; drawDistance = 0; ResetBow(); }
 
-                /*
-                else if (Input.GetMouseButton(1)) {
-                    zoom = true;
-                    if (totalAimRotChange <= 0) {
-                        bow.transform.localRotation = Quaternion.Euler(totalAimRotChange += changeRot, -90, 0);
-                        bow.transform.localPosition += new Vector3(0, 0.0025f, -0.0025f);
-
-                        totalBowPosChanges += new Vector3(0, 0.0025f, -0.0025f);
-                    }
-                }
-                else if (Input.GetMouseButtonUp(1)) {
-                    zoom = false;
-                    totalAimRotChange = totalHipRotChange;
-                    ResetBow();
-                }
-                */
-
                 if (!stopDraw) { 
                     drawDistance += Time.deltaTime * pullSpeed; //set the draw distance
 

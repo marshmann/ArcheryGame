@@ -20,7 +20,7 @@ MonoBehaviour:
   m_ShowMode: 4
   m_Title: 
   m_RootView: {fileID: 2}
-  m_MinSize: {x: 950, y: 300}
+  m_MinSize: {x: 950, y: 521}
   m_MaxSize: {x: 10000, y: 10000}
 --- !u!114 &2
 MonoBehaviour:
@@ -43,7 +43,7 @@ MonoBehaviour:
     y: 0
     width: 1920
     height: 997
-  m_MinSize: {x: 950, y: 300}
+  m_MinSize: {x: 950, y: 521}
   m_MaxSize: {x: 10000, y: 10000}
 --- !u!114 &3
 MonoBehaviour:
@@ -105,10 +105,10 @@ MonoBehaviour:
     y: 30
     width: 1920
     height: 947
-  m_MinSize: {x: 917, y: 492}
-  m_MaxSize: {x: 22012, y: 14042}
+  m_MinSize: {x: 917, y: 471}
+  m_MaxSize: {x: 22012, y: 14021}
   vertical: 1
-  controlID: 119
+  controlID: 235
 --- !u!114 &6
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -130,10 +130,10 @@ MonoBehaviour:
     y: 0
     width: 1920
     height: 947
-  m_MinSize: {x: 917, y: 492}
-  m_MaxSize: {x: 22012, y: 14042}
+  m_MinSize: {x: 917, y: 471}
+  m_MaxSize: {x: 22012, y: 14021}
   vertical: 0
-  controlID: 120
+  controlID: 236
 --- !u!114 &7
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -154,10 +154,10 @@ MonoBehaviour:
     y: 0
     width: 389
     height: 947
-  m_MinSize: {x: 232, y: 492}
-  m_MaxSize: {x: 10002, y: 14042}
+  m_MinSize: {x: 232, y: 471}
+  m_MaxSize: {x: 10002, y: 14021}
   vertical: 1
-  controlID: 23
+  controlID: 237
 --- !u!114 &8
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -176,8 +176,8 @@ MonoBehaviour:
     y: 0
     width: 389
     height: 267
-  m_MinSize: {x: 202, y: 221}
-  m_MaxSize: {x: 4002, y: 4021}
+  m_MinSize: {x: 200, y: 200}
+  m_MaxSize: {x: 4000, y: 4000}
   m_ActualView: {fileID: 17}
   m_Panes:
   - {fileID: 17}
@@ -228,10 +228,10 @@ MonoBehaviour:
     y: 0
     width: 1245
     height: 947
-  m_MinSize: {x: 408, y: 342}
-  m_MaxSize: {x: 8008, y: 8042}
+  m_MinSize: {x: 408, y: 321}
+  m_MaxSize: {x: 8008, y: 8021}
   vertical: 1
-  controlID: 121
+  controlID: 334
 --- !u!114 &11
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -255,7 +255,7 @@ MonoBehaviour:
   m_MinSize: {x: 408, y: 221}
   m_MaxSize: {x: 8008, y: 4021}
   vertical: 0
-  controlID: 122
+  controlID: 335
 --- !u!114 &12
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -324,8 +324,8 @@ MonoBehaviour:
     y: 638
     width: 1245
     height: 309
-  m_MinSize: {x: 104, y: 121}
-  m_MaxSize: {x: 4004, y: 4021}
+  m_MinSize: {x: 100, y: 100}
+  m_MaxSize: {x: 4000, y: 4000}
   m_ActualView: {fileID: 20}
   m_Panes:
   - {fileID: 20}
@@ -382,7 +382,7 @@ MonoBehaviour:
     y: 92
     width: 863
     height: 617
-  m_MaximizeOnPlay: 0
+  m_MaximizeOnPlay: 1
   m_Gizmos: 0
   m_Stats: 0
   m_SelectedSizes: 00000000000000000000000000000000000000000000000000000000000000000000000000000000
@@ -460,9 +460,9 @@ MonoBehaviour:
     height: 246
   m_TreeViewState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: 5042ffff
-    m_LastClickedID: -48560
-    m_ExpandedIDs: 68fbffffa0fbffffdcfbffff00000000d6250000
+    m_SelectedIDs: 8e060000
+    m_LastClickedID: 0
+    m_ExpandedIDs: dcfbffff00000000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -524,17 +524,17 @@ MonoBehaviour:
     m_Folders:
     - Assets/Script
   m_ViewMode: 1
-  m_StartGridSize: 64
+  m_StartGridSize: 58
   m_LastFolders:
   - Assets/Script
-  m_LastFoldersGridSize: -1
+  m_LastFoldersGridSize: 58
   m_LastProjectPath: C:\Users\Nicholas\Documents\ArcheryGame\Archery
   m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: 5a250000
-    m_LastClickedID: 9562
-    m_ExpandedIDs: 00000000aa240000042500008e25000098250000ffffff7f
+    m_SelectedIDs: 5c250000
+    m_LastClickedID: 9564
+    m_ExpandedIDs: 00000000ac24000006250000902500009a250000ffffff7f
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -562,7 +562,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 00000000aa240000042500008e25000098250000
+    m_ExpandedIDs: 00000000ac24000006250000902500009a250000ffffff7f
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -615,7 +615,7 @@ MonoBehaviour:
       m_ResourceFile: 
     m_NewAssetIndexInList: -1
     m_ScrollPosition: {x: 0, y: 0}
-    m_GridSize: 64
+    m_GridSize: 58
   m_DirectoriesAreaWidth: 217
 --- !u!114 &19
 MonoBehaviour:
