@@ -2,6 +2,7 @@
 
 public class AimCamera : MonoBehaviour {
     private Rigidbody rb;
+    private bool inAir = false;
     [SerializeField] float verSensitivity = 2;
     [SerializeField] float horSensitivity = 2;
     [SerializeField] float speed = 0.5f;
@@ -19,13 +20,19 @@ public class AimCamera : MonoBehaviour {
         //Check to see if the player wants to move their camera
         CheckForCameraMovement();
 
-        if (Input.GetKeyDown(KeyCode.Space)) rb.AddForce(new Vector3(0, jumpForce, 0)); //jump
+        if (Input.GetKeyDown(KeyCode.Space) && !inAir) {
+            rb.AddForce(new Vector3(0, jumpForce, 0)); //jump
+            inAir = true;
+        }
         
         //If you're not aiming, move at regular speed
         if(!Input.GetMouseButton(0) && !Input.GetKey(KeyCode.Space)) CheckForMovement(speed);
         //else you'll move at half speed
         else CheckForMovement(speed / 1.5f);
     }
+
+    //Check for ground collision 
+    private void OnCollisionEnter(Collision c) { if (c.gameObject.tag == "Terrain") inAir = false; }
 
     //When the player goes to move, we'll move their rigidbody
     private void CheckForMovement(float moveSpeed) {        
