@@ -19,7 +19,6 @@ public class AimCamera : MonoBehaviour {
     private void Update() {
         //Check to see if the player wants to move their camera
         CheckForCameraMovement();
-
         if (Input.GetKeyDown(KeyCode.Space) && !inAir) {
             rb.AddForce(new Vector3(0, jumpForce, 0)); //jump
             inAir = true;

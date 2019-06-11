@@ -15,7 +15,6 @@ public class EmbedArrow : MonoBehaviour {
         if (sparkExists && !sparks.GetComponent<ParticleSystem>().isEmitting) {
             //If the spark has stopped emitting the we destroy it
             Destroy(sparks, 1f);
-
             //Set this bool to false since the spark object should no longer exist
             sparkExists = false; //we do this so we don't attempt to destroy a non-existing object            
         }
@@ -23,7 +22,8 @@ public class EmbedArrow : MonoBehaviour {
 
     //Once the arrow collides with a mesh collider, this function'll be called
     private void OnCollisionEnter(Collision col) {
-        if (col.gameObject.tag == "Arrow") return; //ignore other arrow collision so it doesn't stop mid-air, also stops someone from creating a giant arrow due to the scale increase/
+        //ignore the player object as well as other arrow objects
+        if (col.gameObject.tag == "Arrow" || col.gameObject.tag == "Player") return; 
 
         transform.GetComponent<ArrowForce>().enabled = false; //We'll disable the projectile force script
         rb.isKinematic = true; //stop moving the object
