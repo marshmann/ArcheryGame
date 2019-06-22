@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 public class EmbedArrow : MonoBehaviour {
-    [SerializeField] GameObject sparksPrefab;
+    [SerializeField] GameObject sparksPrefab = null;
     private GameObject sparks;
     private Rigidbody rb;
     private bool sparkExists = false;

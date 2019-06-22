@@ -3,8 +3,8 @@ using UnityEngine;
 
 public class ShootBow : MonoBehaviour {
 
-    [SerializeField] GameObject arrowPrefab; //base arrow prefab
-    [SerializeField] GameObject bow; //the bow prefab
+    [SerializeField] GameObject arrowPrefab = null; //base arrow prefab
+    [SerializeField] GameObject bow = null; //the bow prefab
     [SerializeField] int arrowsRemaining = 10; //how many arrows the player has
     [SerializeField] int pullSpeed = 10; //the speed at which the arrow is drawn
 
